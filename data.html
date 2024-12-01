@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Data Analysis - GlucoHealth</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #343a40, #6c757d);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #ffffff;
+            transition: color 0.3s ease-in-out;
+            font-weight: bold;
+            font-size: 1.5rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-brand:hover, .navbar-nav .nav-link:hover {
+            color: #ffda79;
+            text-decoration: underline;
+        }
+
+        h1, h3 {
+            color: #343a40;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        table th, table td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background: linear-gradient(to right, #f7c32e, #ffda79);
+            color: #343a40;
+        }
+
+        .img-fluid {
+            border: 2px solid #ffda79;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .img-fluid:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            transition: background 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+        }
+
+        footer {
+            background: linear-gradient(to right, #343a40, #6c757d);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand animate__animated animate__fadeInLeft" href="/home"><i class="fas fa-heartbeat"></i> GlucoHealth</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bmi">BMI Calculator</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">Data Analysis</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center animate__animated animate__fadeInDown">Data Analysis on Diabetes Dataset</h1>
+
+        <div class="data-box">
+            <h3 class="animate__animated animate__fadeInLeft">Top 20 Entries from the Diabetes Dataset</h3>
+            {{ data_table | safe }}
+        </div>
+
+        <div class="my-4">
+            <h3 class="animate__animated animate__fadeInRight">Age Distribution</h3>
+            <img src="{{ url_for('static', filename='age_distribution.png') }}" alt="Age Distribution" class="img-fluid shadow-sm rounded">
+        </div>
+
+        <div class="my-4">
+            <h3 class="animate__animated animate__fadeInLeft">Pregnancies vs Outcome</h3>
+            <img src="{{ url_for('static', filename='pregnancies_vs_outcome.png') }}" alt="Pregnancies vs Outcome" class="img-fluid shadow-sm rounded">
+        </div>
+
+        <div class="my-4">
+            <h3 class="animate__animated animate__fadeInRight">Glucose vs BMI (colored by Outcome)</h3>
+            <img src="{{ url_for('static', filename='glucose_vs_bmi.png') }}" alt="Glucose vs BMI" class="img-fluid shadow-sm rounded">
+        </div>
+
+        <div class="my-4">
+            <h3 class="animate__animated animate__fadeInLeft">Glucose Levels by Outcome</h3>
+            <img src="{{ url_for('static', filename='glucose_boxplot.png') }}" alt="Glucose Levels by Outcome" class="img-fluid shadow-sm rounded">
+        </div>
+
+        <div class="my-4">
+            <h3 class="animate__animated animate__fadeInRight">Correlation Heatmap</h3>
+            <img src="{{ url_for('static', filename='correlation_heatmap.png') }}" alt="Correlation Heatmap" class="img-fluid shadow-sm rounded">
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/home" class="btn btn-primary btn-lg animate__animated animate__fadeInUp">Try Predicting Diabetes!</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 GlucoHealth - All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            background-image: url('static/xx.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.85);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #ffcc29 !important;
+            font-size: 1.2rem;
+        }
+
+        .nav-link:hover {
+            color: #ffc857 !important;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        .calculator-container,
+        .image-container {
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            height: 500px; /* Increased height */
+            width: 100%; /* Makes the container responsive */
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calculator-container:hover,
+        .image-container:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+
+        .calculator-container h2 {
+            text-align: center;
+            color: #ffcc29;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 5px #ffcc29;
+        }
+
+        .btn-primary {
+            background-color: #ffcc29;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffc857;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffcc29;
+            font-size: 1.5rem;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: 100%; /* Ensures the image fills the container */
+            border-radius: 10px;
+            animation: zoomIn 1s ease-in-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        footer {
+            text-align: center;
+            color: #fff;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="/bmi">BMI App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bmi">BMI</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">Data Analysis</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-container">
+                    <h2>BMI Calculator</h2>
+                    <form id="bmiForm" onsubmit="calculateBMI(event)">
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" step="0.1" class="form-control" id="weight" placeholder="Enter your weight" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (m)</label>
+                            <input type="number" step="0.01" class="form-control" id="height" placeholder="Enter your height" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Calculate BMI</button>
+                    </form>
+                    <div id="result" class="result" style="display: none;"></div>
+                    <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="image-container">
+                    <img src="static/bmi.gif" alt="BMI Information">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 GlucoHealth - All Rights Reserved.
+    </footer>
+
+    <script>
+        function calculateBMI(event) {
+            event.preventDefault();
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error-message');
+
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+
+            if (height <= 0 || weight <= 0) {
+                errorDiv.innerHTML = 'Weight and Height must be greater than zero.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const bmi = weight / (height * height);
+            const category = getBMICategory(bmi);
+
+            resultDiv.innerHTML = `Your BMI: ${bmi.toFixed(2)} <br> Category: ${category}`;
+            resultDiv.style.display = 'block';
+        }
+
+        function getBMICategory(bmi) {
+            if (bmi < 18.5) return "Underweight";
+            if (bmi < 24.9) return "Normal weight";
+            if (bmi < 29.9) return "Overweight";
+            return "Obesity";
+        }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

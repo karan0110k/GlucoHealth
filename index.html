@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>GlucoHealth: Predict Your Diabetes</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: url('static/zx.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #343a40, #6c757d);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar a {
+            color: #f7c32e;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffc107;
+            text-decoration: underline;
+        }
+
+        .navbar-brand {
+            color: #f7c32e;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f7c32e;
+            text-align: center;
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        fieldset {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        label {
+            color: #f7c32e;
+            font-weight: bold;
+        }
+
+        input {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px #f7c32e;
+        }
+
+        .btn-primary {
+            background-color: #f7c32e;
+            border: none;
+            font-size: large;
+            font-weight: bold;
+            padding: 10px 30px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffc107;
+        }
+
+        .alert {
+            font-size: larger;
+        }
+
+        .footer {
+            text-align: center;
+            color: #f7c32e;
+            margin-top: 50px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    </head>
+
+<body>
+    <div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: #fff; color: #000;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="welcomeModalLabel">Welcome to GlucoHealth</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Predict Your Diabetes Anywhere Anytime.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="/home" style="display: flex; align-items: center;">
+            <i class="fas fa-heartbeat" style="font-size: 1.5rem; margin-right: 8px;"></i> GlucoHealth
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/bmi">BMI Calculator</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/data">Data Analysis</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="page-title">GlucoHealth: Predict Your Diabetes</h1>
+        <form action="" method="POST">
+            <fieldset class="p-3">
+                {% if prediction != -1 %}
+                <div class="flex-container row m-auto justify-content-center">
+                    <div
+                        class="alert alert-dismissible fade show mt-3 {% if prediction == 1 %} alert-danger {% else %}
+                        alert-success {% endif %}" role="alert">
+                        {% if prediction == 0 %}
+                        It is unlikely for the patient to have diabetes!
+                        {% else %}
+                        It is highly likely that the patient already has or will have diabetes!
+                        {% endif %}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="flex-container row m-auto justify-content-center">
+                    <label for="pregs" class="col-md-4 col-sm-12 m-2 p-1 text-center">Pregnancies</label>
+                    <label for="gluc" class="col-md-4 col-sm-12 m-2 p-1 text-center">Glucose Level</label>
+                </div>
+                <div class="flex-container row m-auto justify-content-center">
+                    <input type="number" min=0 max=10 class="col-md-4 col-sm-12 m-2 p-1 form-control" name="pregs"
+                        id="pregs" required placeholder="No. of Pregnancies">
+                    <input type="number" class="col-md-4 col-sm-12 m-2 p-1 form-control" name="gluc" id="gluc" required
+                        placeholder="Glucose Level (in mg/dL)">
+                </div>
+
+                <div class="flex-container row m-auto justify-content-center">
+                    <label for="bp" class="col-md-4 col-sm-12 m-2 p-1 text-center">Blood Pressure</label>
+                    <label for="skin" class="col-md-4 col-sm-12 m-2 p-1 text-center">Skin Thickness</label>
+                </div>
+                <div class="flex-container row m-auto justify-content-center">
+                    <input type="number" class="col-md-4 col-sm-12 m-2 p-1 form-control" name="bp" id="bp" required
+                        placeholder="Blood Pressure (in mm Hg)">
+                    <input type="number" class="col-md-4 col-sm-12 m-2 p-1 form-control" name="skin" id="skin" required
+                        placeholder="Skin Thickness (in mm)">
+                </div>
+
+                <div class="flex-container row m-auto justify-content-center">
+                    <label for="insulin" class="col-md-4 col-sm-12 m-2 p-1 text-center">Insulin</label>
+                    <label for="bmi" class="col-md-4 col-sm-12 m-2 p-1 text-center">BMI</label>
+                </div>
+                <div class="flex-container row m-auto justify-content-center">
+                    <input type="number" step=0.1 class="col-md-4 col-sm-12 m-2 p-1 form-control" name="insulin"
+                        id="insulin" required placeholder="Insulin">
+                    <input type="number" step=0.1 class="col-md-4 col-sm-12 m-2 p-1 form-control" name="bmi" id="bmi"
+                        required placeholder="BMI">
+                </div>
+
+                <div class="flex-container row m-auto justify-content-center">
+                    <label for="func" class="col-md-4 col-sm-12 m-2 p-1 text-center">Diabetes Pedigree Function</label>
+                    <label for="age" class="col-md-4 col-sm-12 m-2 p-1 text-center">Age</label>
+                </div>
+                <div class="flex-container row m-auto justify-content-center">
+                    <input type="number" step=0.001 class="col-md-4 col-sm-12 m-2 p-1 form-control" name="func" id="func"
+                        required placeholder="Diabetes Pedigree Function">
+                    <input type="number" min=21 class="col-md-4 col-sm-12 m-2 p-1 form-control" name="age" id="age"
+                        required placeholder="Age (in yrs)">
+                </div>
+
+                <div class="flex-container row justify-content-center m-3">
+                    <input type="submit" value="Predict Now" class="btn btn-primary">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <footer>
+        <div class="footer"><p>&copy; 2024 GlucoHealth - All Rights Reserved.</p></div>
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#welcomeModal').modal('show');  
+            setTimeout(function () {
+                $('#welcomeModal').modal('hide');  
+            }, 5000);
+        });
+    </script>
+</body>
+
+</html>
